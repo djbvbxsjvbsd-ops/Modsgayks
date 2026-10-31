@@ -10,6 +10,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - name: Extrair ZIP
+        run: unzip "valdoria-saga-do-enzo.zip" && cp -r "New Folder"/. . && rm -rf "New Folder"
       - uses: actions/setup-java@v4
         with:
           distribution: temurin
