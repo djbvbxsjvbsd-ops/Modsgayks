@@ -1,29 +1,25 @@
-name: Build
+name: Build Mod
 
 on:
   push:
-    branches: [ main ]
+    branches: [ main, master ]
+  workflow_dispatch:
 
 jobs:
   build:
-    runs-on: windows-latest  # ou ubuntu-latest
-
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-
-      - name: Instalar Node
-        uses: actions/setup-node@v4
+      - uses: actions/setup-java@v4
         with:
-          node-version: 18
-
-      - name: Instalar dependências
-        run: npm install
-
+          distribution: temurin
+          java-version: 17
+      - uses: gradle/actions/setup-gradle@v3
+        with:
+          gradle-version: 8.1.1
       - name: Build
-        run: npm run build
-
-      - name: Upload do executável
-        uses: actions/upload-artifact@v4
+        run: gradle build --no-daemon
+      - uses: actions/upload-artifact@v4
         with:
-          name: app-build
-          path: dist/
+          name: valdorianrpg-jar
+          path: build/libs/*.jar
